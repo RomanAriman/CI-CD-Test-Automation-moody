@@ -3,8 +3,8 @@ pipeline {
 
     stages {
         stage('Unit tests - backend') {
-            {agent
-            d   ocker {
+            agent{
+                docker {
                     image 'snakee/goland-junit:1.21'
                     reuseNode true
             }
