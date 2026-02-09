@@ -29,9 +29,13 @@ pipeline {
                     reuseNode true
                 }
             }
+            environment {
+                NPM_CONFIG_OPTIONAL = 'true'
+                NEXT_TELEMETRY_DISABLED = '1'
+            }
             steps {
                 dir('bugtracker-frontend') {
-                    sh 'npm ci'
+                    sh 'npm ci --include=optional'
                     sh 'npm test'
                 }
             }
