@@ -20,9 +20,11 @@ pipeline {
                 dir('bugtracker-backend') {
                     sh 'go test -v ./... 2>&1 | go-junit-report > test-results.xml'
                 }
+            }
             post {
                 always {
                     junit 'bugtracker-backend/test-results.xml'
+                }
             }
         }
         stage('Unit tests - frontend') {
@@ -33,12 +35,15 @@ pipeline {
                 }
             }
             environment {
+                HOME = '/tmp'
+                NPM_CONFIG_CACHE = '/tmp/.npm'
                 NPM_CONFIG_OPTIONAL = 'true'
                 NEXT_TELEMETRY_DISABLED = '1'
             }
             steps {
+                sh 'mkdir -p /tmp/.npm'
                 dir('bugtracker-frontend') {
-                    sh 'npm ci --include=optional'
+                    sh 'npm ci --include=optional --no-audit --no-fund'
                     sh 'npm test'
                 }
             }
